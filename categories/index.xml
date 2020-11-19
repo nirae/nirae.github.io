@@ -6,25 +6,6 @@
     <description>Recent content in Categories on Nirae - Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>fr</language>
-    <copyright>nirae</copyright>
-    <lastBuildDate>Thu, 19 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://nirae.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Forensic</title>
-      <link>https://nirae.github.io/categories/forensic/</link>
-      <pubDate>Thu, 19 Nov 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://nirae.github.io/categories/forensic/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Security</title>
-      <link>https://nirae.github.io/categories/security/</link>
-      <pubDate>Thu, 19 Nov 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://nirae.github.io/categories/security/</guid>
-      <description></description>
-    </item>
-    
+    <copyright>nirae</copyright><atom:link href="https://nirae.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
