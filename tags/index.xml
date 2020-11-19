@@ -6,6 +6,52 @@
     <description>Recent content in Tags on Nirae - Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>fr</language>
-    <copyright>nirae</copyright><atom:link href="https://nirae.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>nirae</copyright>
+    <lastBuildDate>Thu, 19 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://nirae.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ctf</title>
+      <link>https://nirae.github.io/tags/ctf/</link>
+      <pubDate>Thu, 19 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://nirae.github.io/tags/ctf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>forensic</title>
+      <link>https://nirae.github.io/tags/forensic/</link>
+      <pubDate>Thu, 19 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://nirae.github.io/tags/forensic/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>malware</title>
+      <link>https://nirae.github.io/tags/malware/</link>
+      <pubDate>Thu, 19 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://nirae.github.io/tags/malware/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>security</title>
+      <link>https://nirae.github.io/tags/security/</link>
+      <pubDate>Thu, 19 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://nirae.github.io/tags/security/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>writeup</title>
+      <link>https://nirae.github.io/tags/writeup/</link>
+      <pubDate>Thu, 19 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://nirae.github.io/tags/writeup/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>

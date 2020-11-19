@@ -6,11 +6,12 @@
     <description>Recent content on Nirae - Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>fr</language>
-    <copyright>nirae</copyright><atom:link href="https://nirae.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>nirae</copyright>
+    <lastBuildDate>Thu, 19 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://nirae.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title></title>
+      <title>Writeup - Challenge DGSE Brigitte Friang - Forensic | Introduction au Forensic avec un cas réaliste</title>
       <link>https://nirae.github.io/posts/writeup-challenge-dgse-brigitte-friang-forensic/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 19 Nov 2020 00:00:00 +0000</pubDate>
       
       <guid>https://nirae.github.io/posts/writeup-challenge-dgse-brigitte-friang-forensic/</guid>
       <description>Du 24 octobre au 11 novembre 2020, la DGSE et ESIEE Paris organisaient le challenge/CTF Brigitte Friang.

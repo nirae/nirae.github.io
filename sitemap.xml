@@ -3,12 +3,28 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://nirae.github.io/posts/writeup-challenge-dgse-brigitte-friang-forensic/</loc>
+    <loc>https://nirae.github.io/categories/</loc>
     <lastmod>2020-11-19T03:04:36+01:00</lastmod>
   </url>
   
   <url>
-    <loc>https://nirae.github.io/categories/</loc>
+    <loc>https://nirae.github.io/tags/ctf/</loc>
+    <lastmod>2020-11-19T03:04:36+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://nirae.github.io/categories/forensic/</loc>
+    <lastmod>2020-11-19T03:04:36+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://nirae.github.io/tags/forensic/</loc>
+    <lastmod>2020-11-19T03:04:36+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://nirae.github.io/tags/malware/</loc>
+    <lastmod>2020-11-19T03:04:36+01:00</lastmod>
   </url>
   
   <url>
@@ -22,7 +38,28 @@
   </url>
   
   <url>
+    <loc>https://nirae.github.io/categories/security/</loc>
+    <lastmod>2020-11-19T03:04:36+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://nirae.github.io/tags/security/</loc>
+    <lastmod>2020-11-19T03:04:36+01:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://nirae.github.io/tags/</loc>
+    <lastmod>2020-11-19T03:04:36+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://nirae.github.io/tags/writeup/</loc>
+    <lastmod>2020-11-19T03:04:36+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://nirae.github.io/posts/writeup-challenge-dgse-brigitte-friang-forensic/</loc>
+    <lastmod>2020-11-19T03:04:36+01:00</lastmod>
   </url>
   
 </urlset>
