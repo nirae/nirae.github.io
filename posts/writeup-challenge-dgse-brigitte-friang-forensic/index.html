@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  
+    <title>Writeup - Challenge DGSE Brigitte Friang - Forensic | Introduction au Forensic avec un cas réaliste :: Nirae - Blog</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Du 24 octobre au 11 novembre 2020, la DGSE et ESIEE Paris organisaient le challenge/CTF Brigitte Friang.
+Cette année, “Brigitte Friang”, résistante et membre du BCRA, les services de renseignement de la France Libre de la Seconde Guerre mondiale est mise à l&amp;rsquo;honneur.
+ En résumé, le challenge était composé de trois parties :
+Une première consistant à décoder un message depuis la première page du challenge: challengecybersec.fr. Une fois cette étape passée, nous arrivions sur un &amp;ldquo;chat&amp;rdquo; composé de plusieurs agents nous donnant des missions de plusieurs disciplines (algo, web, cryptographie, forensic)." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://nirae.github.io/posts/writeup-challenge-dgse-brigitte-friang-forensic/" />
+
+
+
+
+<link rel="stylesheet" href="https://nirae.github.io/assets/style.css">
+
+  <link rel="stylesheet" href="https://nirae.github.io/assets/green.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="https://nirae.github.io/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="https://nirae.github.io/img/favicon/green.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="Nirae" />
+
+
+
+<meta property="og:locale" content="fr" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Writeup - Challenge DGSE Brigitte Friang - Forensic | Introduction au Forensic avec un cas réaliste">
+<meta property="og:description" content="Nous allons voir dans cet article la manière dont j&#39;ai résolu la track Forensic de la deuxieme partie du challenge Brigitte Friang, organisé par la DGSE et ESIEE Paris. Et en profiter pour faire une introduction au forensic avec un cas réaliste!" />
+<meta property="og:url" content="https://nirae.github.io/posts/writeup-challenge-dgse-brigitte-friang-forensic/" />
+<meta property="og:site_name" content="Nirae - Blog" />
+
+  <meta property="og:image" content="https://nirae.github.io/img/brigitte-friang-challenge.png">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+  <meta property="article:section" content="Security" />
+
+  <meta property="article:section" content="Forensic" />
+
+
+  <meta property="article:published_time" content="2020-11-19 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+
+<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+
+
+<script type="text/javascript">
+    var _paq = window._paq = window._paq || [];
+
+     
+    _paq.push([function() {
+        var self = this;
+        function getOriginalVisitorCookieTimeout() {
+            var now = new Date(),
+            nowTs = Math.round(now.getTime() / 1000),
+            visitorInfo = self.getVisitorInfo();
+            var createTs = parseInt(visitorInfo[2]);
+            var cookieTimeout = 33696000; 
+            var originalTimeout = createTs + cookieTimeout - nowTs;
+            return originalTimeout;
+        } 
+        this.setVisitorCookieTimeout( getOriginalVisitorCookieTimeout() ); 
+    }]);
+
+     
+    _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function() {
+      var u="//matomo.nicolasdubouilh.fr/";
+      _paq.push(['setTrackerUrl', u+'matomo.php']);
+      _paq.push(['setSiteId', '2']);
+      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+      g.type='text/javascript'; g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+    })();
+  </script>
+  <noscript><p><img src="//matomo.nicolasdubouilh.fr/matomo.php?idsite=2&amp;rec=1" style="border:0;" alt="" /></p></noscript>
+  
+  
+  
+
+</head>
+<body class="green">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="https://nirae.github.io/">
+  <div class="logo">
+    Nirae
+  </div>
+</a>
+
+    </div>
+    
+  </div>
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="https://nirae.github.io/posts/writeup-challenge-dgse-brigitte-friang-forensic/">Writeup - Challenge DGSE Brigitte Friang - Forensic | Introduction au Forensic avec un cas réaliste</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2020-11-19 [Updated: 2020-11-19]
+      </span>
+    
+    
+    <span class="post-author">:: Nirae</span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="https://nirae.github.io/tags/security/">security</a>&nbsp;
+    
+    #<a href="https://nirae.github.io/tags/ctf/">ctf</a>&nbsp;
+    
+    #<a href="https://nirae.github.io/tags/writeup/">writeup</a>&nbsp;
+    
+    #<a href="https://nirae.github.io/tags/forensic/">forensic</a>&nbsp;
+    
+    #<a href="https://nirae.github.io/tags/malware/">malware</a>&nbsp;
+    
+  </span>
+  
+
+  
+    <img src="https://nirae.github.io/img/brigitte-friang-challenge.png" class="post-cover" alt="Writeup - Challenge DGSE Brigitte Friang - Forensic | Introduction au Forensic avec un cas réaliste" />
+  
+
+  
+
+  <div class="post-content"><div>
+        <p>Du 24 octobre au 11 novembre 2020, la DGSE et ESIEE Paris organisaient le challenge/CTF Brigitte Friang.</p>
+<p>Cette année, “Brigitte Friang”, résistante et membre du BCRA, les services de renseignement de la France Libre de la Seconde Guerre mondiale est mise à l&rsquo;honneur.</p>
+<hr>
+<p>En résumé, le challenge était composé de trois parties :</p>
+<p>Une première consistant à décoder un message depuis la première page du challenge: <a href="https://challengecybersec.fr/">challengecybersec.fr</a>.
+Une fois cette étape passée, nous arrivions sur un &ldquo;chat&rdquo; composé de plusieurs agents nous donnant des missions de plusieurs disciplines (algo, web, cryptographie, forensic).
+Nous devions résoudre une de ces catégories pour enfin accéder à la troisième partie. Qui était finalement une plateforme de CTF classique en équipe.</p>
+<p>Nous allons voir dans cet article la manière dont j&rsquo;ai résolu la track forensic de la deuxième partie du challenge. Qui est, je trouve, assez intéressante pour être détaillée et partagée.</p>
+<p>Elle constitue une très bonne introduction au domaine du Forensic Avec un cas plutôt réaliste, un &ldquo;vrai&rdquo; malware et un peu de reverse engineering!</p>
+<h1 id="cest-parti">C&rsquo;est parti!<a href="#cest-parti" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
+<p>Nous commençons donc directement à la deuxième partie du challenge, le chat avec les différentes catégories.</p>
+
+  <img src="https://nirae.github.io/img/screenshot_brigitte-friang-3.png"  alt="screenshot-chat"  class="left"  style="border-radius: 5px;"  />
+
+
+<p>Acceptons la mission du cher monsieur Bertillon !</p>
+
+  <img src="https://nirae.github.io/img/screenshot_brigitte-friang-4.png"  alt="screenshot-chat"  class="left"  style="border-radius: 5px;"  />
+
+
+<h2 id="logs-nginx">Logs Nginx<a href="#logs-nginx" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Faisons une simple recherche avec <code>grep</code> sur le nom &ldquo;Evil&rdquo; de &ldquo;EvilCorp&rdquo;</p>
+
+
+
+  <div class="collapsable-code">
+    <input id="236189574" type="checkbox"  />
+    <label for="236189574">
+      <span class="collapsable-code__language">shell</span>
+      
+      <span class="collapsable-code__toggle" data-label-expand="Montrer" data-label-collapse="Cacher"></span>
+    </label>
+    <pre class="language-shell" ><code>
+$ grep &#34;Evil&#34; access.log
+179.97.58.61 - - [Nov 05 2020 16:22:20] &#34;POST /login HTTP/1.1&#34; 200 476 &#34;-&#34; &#34;Evil Browser&#34;
+</code></pre>
+  </div>
+
+
+
+  <img src="https://nirae.github.io/img/screenshot_brigitte-friang-5.png"  alt="screenshot-chat"  class="left"  style="border-radius: 5px;"  />
+
+
+<p>Bon&hellip;</p>
+<h3 id="steganographie">Steganographie<a href="#steganographie" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Passons aux choses sérieuses. Nous obtenons une image.</p>
+
+  <img src="https://nirae.github.io/img/screenshot_brigitte-friang-6.png"  alt="screenshot-chat"  class="left"  style="border-radius: 5px;"  />
+
+
+<p>Très jolie&hellip; Mais un peu lourde pour sa taille en regardant de plus près avec <code>file</code> et <code>ls</code>
+
+
+
+  <div class="collapsable-code">
+    <input id="638295741" type="checkbox"  />
+    <label for="638295741">
+      <span class="collapsable-code__language">shell</span>
+      
+      <span class="collapsable-code__toggle" data-label-expand="Montrer" data-label-collapse="Cacher"></span>
+    </label>
+    <pre class="language-shell" ><code>
+$ file evil_country_landscape.jpg &amp;&amp; ls -lh evil_country_landscape.jpg
+evil_country_landscape.jpg: JPEG image data, JFIF standard 1.01, aspect ratio, density 1x1, segment length 16, progressive, precision 8, 640x436, components 3
+-rw-r--r-- 1 nirae nirae 303M 26 oct.  15:37 evil_country_landscape.jpg
+</code></pre>
+  </div>
+
+</p>
+<p>Une image de 640x436 pesant 303 Mo. Elle contient surement des fichiers cachés à l&rsquo;intérieur.</p>
+<p>Nous pouvons le vérifier avec l&rsquo;outil <code>binwalk</code></p>
+
+
+
+  <div class="collapsable-code">
+    <input id="498673251" type="checkbox"  />
+    <label for="498673251">
+      <span class="collapsable-code__language">shell</span>
+      
+      <span class="collapsable-code__toggle" data-label-expand="Montrer" data-label-collapse="Cacher"></span>
+    </label>
+    <pre class="language-shell" ><code>
+$ binwalk evil_country_landscape.jpg
+
+DECIMAL       HEXADECIMAL     DESCRIPTION
+--------------------------------------------------------------------------------
+0             0x0             JPEG image data, JFIF standard 1.01
+79798         0x137B6         Zip archive data, at least v2.0 to extract, uncompressed size: 173015040, name: part2.img
+4775856       0x48DFB0        Zlib compressed data, best compression
+^[[C34737670      0x2120E06       MySQL MISAM compressed data file Version 1
+56164092      0x358FEFC       IMG0 (VxWorks) header, size: 257308484
+128298187     0x7A5ACCB       Cisco IOS microcode, for &#34;w%&#34;
+158637081     0x9749C19       Zip archive data, at least v2.0 to extract, uncompressed size: 173015040, name: part3.img
+239002530     0xE3EE3A2       Zlib compressed data, best compression
+317286906     0x12E969FA      End of Zip archive, footer length: 22
+</code></pre>
+  </div>
+
+
+<p>Effectivement elle contient bien d&rsquo;autres fichiers, dont des archives <strong>ZIP</strong>. Binwalk nous permets de les extraire.</p>
+
+
+
+  <div class="collapsable-code">
+    <input id="421835769" type="checkbox" checked />
+    <label for="421835769">
+      <span class="collapsable-code__language">shell</span>
+      
+      <span class="collapsable-code__toggle" data-label-expand="Montrer" data-label-collapse="Cacher"></span>
+    </label>
+    <pre class="language-shell" ><code>
+$ binwalk -eM evil_country_landscape.jpg
+
+Scan Time:     2020-10-26 11:07:46
+Target File:   /home/nirae/Lab/brigitte-friang/evil_country_landscape.jpg
+MD5 Checksum:  8c9bb1dddadd9f04df78cbe8d44be4fe
+Signatures:    391
+
+DECIMAL       HEXADECIMAL     DESCRIPTION
+--------------------------------------------------------------------------------
+0             0x0             JPEG image data, JFIF standard 1.01
+79798         0x137B6         Zip archive data, at least v2.0 to extract, uncompressed size: 173015040, name: part2.img
+4775856       0x48DFB0        Zlib compressed data, best compression
+34737670      0x2120E06       MySQL MISAM compressed data file Version 1
+56164092      0x358FEFC       IMG0 (VxWorks) header, size: 257308484
+128298187     0x7A5ACCB       Cisco IOS microcode, for &#34;w%&#34;
+158637081     0x9749C19       Zip archive data, at least v2.0 to extract, uncompressed size: 173015040, name: part3.img
+239002530     0xE3EE3A2       Zlib compressed data, best compression
+317286906     0x12E969FA      End of Zip archive, footer length: 22
+
+
+Scan Time:     2020-10-26 11:08:51
+Target File:   /home/nirae/Lab/brigitte-friang/_evil_country_landscape.jpg.extracted/part2.img
+MD5 Checksum:  0eb69c5169184ab37d478dce45e4ed55
+Signatures:    391
+
+DECIMAL       HEXADECIMAL     DESCRIPTION
+--------------------------------------------------------------------------------
+3694592       0x386000        Linux EXT filesystem, blocks count: 83456, image size: 85458944, rev 1.0, ext3 filesystem data, UUID=bcb580b1-a10c-4c29-9cab-833f13f213f2
+142617411     0x8802B43       Cisco IOS microcode, for &#34;w%&#34;
+159703094     0x984E036       MySQL MISAM compressed data file Version 8
+
+
+Scan Time:     2020-10-26 11:09:10
+Target File:   /home/nirae/Lab/brigitte-friang/_evil_country_landscape.jpg.extracted/part3.img
+MD5 Checksum:  00f1ff95393315894f605c1ff94b8ee6
+Signatures:    391
+
+DECIMAL       HEXADECIMAL     DESCRIPTION
+--------------------------------------------------------------------------
+</code></pre>
+  </div>
+
+
+<h2 id="raid">RAID<a href="#raid" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Nous avons donc obtenus deux fichiers intéressants : &ldquo;part2.img&rdquo; et &ldquo;part3.img&rdquo;. Observons les.</p>
+
+
+
+  <div class="collapsable-code">
+    <input id="657824319" type="checkbox"  />
+    <label for="657824319">
+      <span class="collapsable-code__language">shell</span>
+      
+      <span class="collapsable-code__toggle" data-label-expand="Montrer" data-label-collapse="Cacher"></span>
+    </label>
+    <pre class="language-shell" ><code>
+$ file part2.img &amp;&amp; file part3.img 
+part2.img: Linux Software RAID version 1.2 (1) UUID=dfaa645a:19afec72:60f1fa33:30d841da name=user-XPS-15-9570:6 level=5 disks=3
+part3.img: Linux Software RAID version 1.2 (1) UUID=dfaa645a:19afec72:60f1fa33:30d841da name=user-XPS-15-9570:6 level=5 disks=3
+</code></pre>
+  </div>
+
+
+<p>Ce sont en fait deux images de disques RAID Linux. On apprend aussi qu&rsquo;il s&rsquo;agit de <strong>RAID 5</strong>, avec <strong>3 disques</strong>. Et nous en avons visiblement 2.</p>
+<p>Voyons ce que <a href="https://fr.wikipedia.org/wiki/RAID_(informatique)">Wikipédia</a> a à nous dire:</p>
+<blockquote>
+<p>Le RAID est un ensemble de techniques de virtualisation du stockage permettant de répartir des données sur plusieurs disques durs afin d&rsquo;améliorer soit les performances, soit la sécurité ou la tolérance aux pannes de l&rsquo;ensemble du ou des systèmes.</p>
+</blockquote>
+<p>Le principe du <a href="https://fr.wikipedia.org/wiki/RAID_(informatique)#RAID_5_:_volume_agr%C3%A9g%C3%A9_par_bandes_%C3%A0_parit%C3%A9_r%C3%A9partie">RAID5</a> est de fonctionner avec au moins 3 disques et justement pouvoir récupérer les données si un des disques tombe en panne ou manque. C&rsquo;est notre cas ici.</p>
+<p>Nous allons donc reconstruire le RAID pour accéder aux données qui y sont stockées. Je vais faire ça dans une machine virtuelle Debian, avec Vagrant.</p>
+<p>On va d&rsquo;abord monter les fichiers images sur des fichiers loop avec <code>losetup</code> pour les passer à <code>mdadm</code></p>
+
+
+
+  <div class="collapsable-code">
+    <input id="819724635" type="checkbox"  />
+    <label for="819724635">
+      <span class="collapsable-code__language">shell</span>
+      
+      <span class="collapsable-code__toggle" data-label-expand="Montrer" data-label-collapse="Cacher"></span>
+    </label>
+    <pre class="language-shell" ><code>
+$ sudo losetup /dev/loop0 part2.img
+$ sudo losetup /dev/loop1 part3.img
+</code></pre>
+  </div>
+
+
+<p>Maintenant, grâce à <code>mdadm</code>, nous allons pouvoir recréer le RAID logiciel tel qu&rsquo;il était avant la perte d&rsquo;un des disques.</p>
+
+
+
+  <div class="collapsable-code">
+    <input id="962357148" type="checkbox"  />
+    <label for="962357148">
+      <span class="collapsable-code__language">shell</span>
+      
+      <span class="collapsable-code__toggle" data-label-expand="Montrer" data-label-collapse="Cacher"></span>
+    </label>
+    <pre class="language-shell" ><code>
+$ sudo mdadm --assemble /dev/md0 /dev/loop0 /dev/loop1
+</code></pre>
+  </div>
+
+
+<p>Les données sont maintenant ré-assemblées dans le volume RAID <code>/dev/md0</code>, il ne reste plus qu&rsquo;a le monter.</p>
+
+
+
+  <div class="collapsable-code">
+    <input id="923185476" type="checkbox"  />
+    <label for="923185476">
+      <span class="collapsable-code__language">shell</span>
+      
+      <span class="collapsable-code__toggle" data-label-expand="Montrer" data-label-collapse="Cacher"></span>
+    </label>
+    <pre class="language-shell" ><code>
+$ sudo mkdir /mnt/recover
+$ sudo mount /dev/md0 /mnt/recover
+$ ls /mnt/recover
+dump.zip  lost&#43;found
+</code></pre>
+  </div>
+
+
+<p>Et voilà ! Nous avons pu récupérer le fichier <code>dump.zip</code>.</p>
+<h2 id="forensic">Forensic<a href="#forensic" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Après avoir décompressé le fichier trouvé, nous obtenons un fichier <code>dump.vmem</code>. Regardons s&rsquo;il s&rsquo;agit d&rsquo;un dump mémoire avec <strong>Volatility</strong>.</p>
+<p>J&rsquo;utilise personnellement <a href="https://hub.docker.com/r/cincan/volatility">une version</a> Docker de Volatility mais c&rsquo;est évidemment la même chose avec la version classique.</p>
+<p>Pour savoir si c&rsquo;est un dump mémoire, nous pouvons lancer un <code>imageinfo</code> afin d&rsquo;en connaitre le type si c&rsquo;est le cas</p>
+
+
+
+  <div class="collapsable-code">
+    <input id="926138574" type="checkbox"  />
+    <label for="926138574">
+      <span class="collapsable-code__language">shell</span>
+      
+      <span class="collapsable-code__toggle" data-label-expand="Montrer" data-label-collapse="Cacher"></span>
+    </label>
+    <pre class="language-shell" ><code>
+$ docker run --rm -v $(pwd):/data -ti cincan/volatility imageinfo -f /data/dump.vmem                   !
+Volatility Foundation Volatility Framework 2.6.1
+INFO    : volatility.debug    : Determining profile based on KDBG search...
+          Suggested Profile(s) : Win7SP1x64, Win7SP0x64, Win2008R2SP0x64, Win2008R2SP1x64_24000, Win2008R2SP1x64_23418, Win2008R2SP1x64, Win7SP1x64_24000, Win7SP1x64_23418
+                     AS Layer1 : WindowsAMD64PagedMemory (Kernel AS)
+                     AS Layer2 : FileAddressSpace (/data/dump.vmem)
+                      PAE type : No PAE
+                           DTB : 0x187000L
+                          KDBG : 0xf80002c4c0a0L
+          Number of Processors : 1
+     Image Type (Service Pack) : 1
+                KPCR for CPU 0 : 0xfffff80002c4dd00L
+             KUSER_SHARED_DATA : 0xfffff78000000000L
+           Image date and time : 2020-10-05 11:17:37 UTC&#43;0000
+     Image local date and time : 2020-10-05 13:17:37 &#43;0200
+</code></pre>
+  </div>
+
+
+<p>Volatility nous indique que c&rsquo;est effectivement un dump, probablement un Windows 7 (Win7SP1x64)</p>
+<p>On regarde les fichiers présents et au bout de quelques recherches simples avec <code>grep</code>, on tombe sur des fichiers avec l&rsquo;extension <code>.evil</code></p>
+
+
+
+  <div class="collapsable-code">
+    <input id="617943852" type="checkbox"  />
+    <label for="617943852">
+      <span class="collapsable-code__language">shell</span>
+      
+      <span class="collapsable-code__toggle" data-label-expand="Montrer" data-label-collapse="Cacher"></span>
+    </label>
+    <pre class="language-shell" ><code>
+$ volatility -f data/dump.vmem --profile=Win7SP1x64 filescan | grep evil
+Volatility Foundation Volatility Framework 2.6
+0x000000001715ed50     16      0 R--r-- \Device\HarddiskVolume1\Users\user\Documents\informations_attaque.txt.evil
+0x000000003fa3ebc0      2      0 RW-r-- \Device\HarddiskVolume1\ProgramData\Microsoft\RAC\PublishedData\RacWmiDatabase.sdf.evil
+0x000000003fac8d10     32      0 RW-r-- \Device\HarddiskVolume1\ProgramData\Microsoft\Windows\WER\ReportQueue\NonCritical_Firefox_installe_d514681bfc376345742b2157ace1e72c17fd991_cab_0938b7ba\appcompat.txt.evil
+0x000000003fad8620     16      0 RW-r-- \Device\HarddiskVolume1\Users\user\AppData\Local\Microsoft\Windows\Caches\{AFBF9F1A-8EE8-4C77-AF34-C647E37CA0D9}.1.ver0x0000000000000002.db.evil
+</code></pre>
+  </div>
+
+
+<p>On peut donc supposer que la machine a été infectée par un virus, qui a chiffré certains fichiers. Partons à sa recherche en listant l&rsquo;arbre des processus en cours</p>
+
+
+
+  <div class="collapsable-code">
+    <input id="927546138" type="checkbox"  />
+    <label for="927546138">
+      <span class="collapsable-code__language">shell</span>
+      
+      <span class="collapsable-code__toggle" data-label-expand="Montrer" data-label-collapse="Cacher"></span>
+    </label>
+    <pre class="language-shell" ><code>
+$ volatility -f /data/dump.vmem --profile=Win7SP1x64 pstree
+Volatility Foundation Volatility Framework 2.6.1
+Name                                                  Pid   PPid   Thds   Hnds Time
+-------------------------------------------------- ------ ------ ------ ------ ----
+ 0xfffffa8002816060:wininit.exe                       404    336      3     74 2020-10-05 11:13:42 UTC&#43;0000
+. 0xfffffa8002a007c0:lsass.exe                        512    404      7    565 2020-10-05 11:13:42 UTC&#43;0000
+. 0xfffffa8002a0db30:lsm.exe                          520    404     10    145 2020-10-05 11:13:42 UTC&#43;0000
+. 0xfffffa80029f76d0:services.exe                     504    404      8    220 2020-10-05 11:13:42 UTC&#43;0000
+.. 0xfffffa8002b6e430:VGAuthService.                 1560    504      4     84 2020-10-05 11:13:46 UTC&#43;0000
+.. 0xfffffa8002d2ab30:svchost.exe                    1304    504     20    325 2020-10-05 11:13:45 UTC&#43;0000
+.. 0xfffffa8002b8ab30:svchost.exe                     920    504     48    979 2020-10-05 11:13:43 UTC&#43;0000
+.. 0xfffffa8002a0fb30:svchost.exe                     644    504     10    353 2020-10-05 11:13:43 UTC&#43;0000
+... 0xfffffa8001ca9060:WmiPrvSE.exe                  3032    644     15    330 2020-10-05 11:14:07 UTC&#43;0000
+... 0xfffffa8002f1f060:WmiPrvSE.exe                  1892    644     10    193 2020-10-05 11:13:47 UTC&#43;0000
+.. 0xfffffa8000e78920:taskhost.exe                   2464    504      6     88 2020-10-05 11:17:08 UTC&#43;0000
+.. 0xfffffa8002bf8060:svchost.exe                     304    504     20    391 2020-10-05 11:13:44 UTC&#43;0000
+.. 0xfffffa8002cc6310:spoolsv.exe                    1156    504     15    270 2020-10-05 11:13:44 UTC&#43;0000
+.. 0xfffffa80031d5790:sppsvc.exe                     2844    504      6    156 2020-10-05 11:16:54 UTC&#43;0000
+.. 0xfffffa8001e6ab30:dllhost.exe                    1832    504     20    186 2020-10-05 11:13:47 UTC&#43;0000
+.. 0xfffffa8003021690:VSSVC.exe                      2076    504      6    109 2020-10-05 11:13:49 UTC&#43;0000
+.. 0xfffffa8002d11a60:taskhost.exe                   1216    504     10    204 2020-10-05 11:13:44 UTC&#43;0000
+.. 0xfffffa8002affb30:svchost.exe                     708    504      6    276 2020-10-05 11:13:43 UTC&#43;0000
+.. 0xfffffa80030d4770:svchost.exe                    2372    504     23    258 2020-10-05 11:13:51 UTC&#43;0000
+.. 0xfffffa8002b6f2c0:vmtoolsd.exe                   1584    504     12    292 2020-10-05 11:13:46 UTC&#43;0000
+... 0xfffffa800117db30:cmd.exe                       1744   1584      0 ------ 2020-10-05 11:17:37 UTC&#43;0000
+.... 0xfffffa8001116060:ipconfig.exe                 2832   1744      0 ------ 2020-10-05 11:17:37 UTC&#43;0000
+.. 0xfffffa801bbf6b30:svchost.exe                    2276    504     12    327 2020-10-05 11:16:54 UTC&#43;0000
+.. 0xfffffa8002fd4b30:wmpnetwk.exe                   2296    504     11    213 2020-10-05 11:13:50 UTC&#43;0000
+.. 0xfffffa8002ef2b30:dllhost.exe                    2008    504     17    195 2020-10-05 11:13:48 UTC&#43;0000
+.. 0xfffffa8002fc9560:msdtc.exe                       872    504     15    155 2020-10-05 11:13:49 UTC&#43;0000
+.. 0xfffffa800107c6a0:WmiApSrv.exe                   2632    504      7    119 2020-10-05 11:17:18 UTC&#43;0000
+.. 0xfffffa8002c4bb30:SearchIndexer.                 2156    504     12    557 2020-10-05 11:13:50 UTC&#43;0000
+... 0xfffffa80030e4750:SearchProtocol                2400   2156      7    273 2020-10-05 11:13:51 UTC&#43;0000
+... 0xfffffa80030e7b30:SearchFilterHo                2420   2156      4     86 2020-10-05 11:13:51 UTC&#43;0000
+.. 0xfffffa8002b28b30:svchost.exe                     880    504     16    320 2020-10-05 11:13:43 UTC&#43;0000
+... 0xfffffa8002c6b500:dwm.exe                       1072    880      6    124 2020-10-05 11:13:44 UTC&#43;0000
+.. 0xfffffa8002bd4060:svchost.exe                     244    504     26    720 2020-10-05 11:13:44 UTC&#43;0000
+.. 0xfffffa8002b1f4a0:svchost.exe                     760    504     23    514 2020-10-05 11:13:43 UTC&#43;0000
+... 0xfffffa8002bb4b30:audiodg.exe                    980    760      7    128 2020-10-05 11:13:44 UTC&#43;0000
+ 0xfffffa8002810060:csrss.exe                         352    336      8    517 2020-10-05 11:13:42 UTC&#43;0000
+. 0xfffffa8002161630:conhost.exe                     2928    352      0 ------ 2020-10-05 11:17:37 UTC&#43;0000
+ 0xfffffa8000e91b30:drpbx.exe                        2304   2916      8    149 2020-10-05 11:17:01 UTC&#43;0000
+ 0xfffffa8000cc5b30:System                              4      0     87    393 2020-10-05 11:13:41 UTC&#43;0000
+. 0xfffffa800bad5480:smss.exe                         264      4      2     29 2020-10-05 11:13:41 UTC&#43;0000
+ 0xfffffa8002c6fb30:explorer.exe                     1084   1064     32    828 2020-10-05 11:13:44 UTC&#43;0000
+. 0xfffffa8001072060:notepad.exe                     1880   1084      1     62 2020-10-05 11:17:36 UTC&#43;0000
+. 0xfffffa8002d27b30:vmtoolsd.exe                    1248   1084      8    166 2020-10-05 11:13:44 UTC&#43;0000
+. 0xfffffa8002d234f0:vm3dservice.ex                  1240   1084      3     39 2020-10-05 11:13:44 UTC&#43;0000
+ 0xfffffa80111d32e0:csrss.exe                         412    396      9    209 2020-10-05 11:13:42 UTC&#43;0000
+ 0xfffffa80029c2910:winlogon.exe                      460    396      4    110 2020-10-05 11:13:42 UTC&#43;0000
+</code></pre>
+  </div>
+
+
+<p>Après un peu de temps à analyser les processus, il y en a un qui parait intéressant, <code>drpbx.exe</code>. Un processus qui tenterait de se faire passer pour Dropbox ?</p>
+<p>Notre moteur de recherche préféré (ou pas forcément) nous indiquera qu&rsquo;il s&rsquo;agit bien d&rsquo;un virus connu, <a href="https://fr.wikipedia.org/wiki/Jigsaw_(ransomware)"><strong>Jigsaw</strong></a>.</p>
+<p><a href="https://fr.wikipedia.org/wiki/Jigsaw_(ransomware)"><strong>Jigsaw</strong></a> est un ransomware (rançongiciel) très connu car très actif à partir de 2016. Il est écrit en <code>.NET</code> et il existe plusieurs versions différentes dans la nature. Mais qui fonctionne de la même manière, il va se faire passer pour Firefox et/ou Dropbox, chiffrer les fichiers utilisateurs (fichiers textes, images, zip, etc) en les renommant avec une extension différente suivant les versions. L&rsquo;utilisateur se retrouve donc sans fichiers et avec une interface demandant de payer une certaine somme en Bitcoin pour les déchiffrer.</p>
+<p>Au vu de l&rsquo;extension <code>.evil</code>, on sait qu&rsquo;il s&rsquo;agit d&rsquo;une version modifiée du malware car elle ne fait pas partie des extensions des versions connues. On va donc devoir l&rsquo;analyser nous-même.</p>
+<p>Pour l&rsquo;extraire:</p>
+
+
+
+  <div class="collapsable-code">
+    <input id="194728635" type="checkbox"  />
+    <label for="194728635">
+      <span class="collapsable-code__language">shell</span>
+      
+      <span class="collapsable-code__toggle" data-label-expand="Montrer" data-label-collapse="Cacher"></span>
+    </label>
+    <pre class="language-shell" ><code>
+$ volatility -f /samples/dump.vmem --profile=Win7SP1x64 procdump --dump-dir /samples/out -p 2304
+Volatility Foundation Volatility Framework 2.6.1
+Process(V)         ImageBase          Name                 Result
+------------------ ------------------ -------------------- ------
+0xfffffa8000e91b30 0x0000000000870000 drpbx.exe            OK: executable.2304.exe
+</code></pre>
+  </div>
+
+
+<h2 id="reverse-engineering">Reverse Engineering<a href="#reverse-engineering" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Nous allons maintenant dé-compiler le malware pour voir son code. Nous savons qu&rsquo;il est écrit en <code>.NET</code>, donc nous allons utiliser <a href="https://github.com/icsharpcode/ILSpy"><strong>ILSpy</strong></a>. Pour ma part, je vais (encore) utiliser <a href="https://hub.docker.com/r/cincan/ilspy">cette version</a> Docker de <strong>ILSpy</strong>.</p>
+
+
+
+  <div class="collapsable-code">
+    <input id="758419236" type="checkbox"  />
+    <label for="758419236">
+      <span class="collapsable-code__language">shell</span>
+      
+      <span class="collapsable-code__toggle" data-label-expand="Montrer" data-label-collapse="Cacher"></span>
+    </label>
+    <pre class="language-shell" ><code>
+$ docker run -v $(pwd):/samples cincan/ilspy /samples/executable.2304.exe
+</code></pre>
+  </div>
+
+
+<p>Je vous passe le code entier, pour des raisons évidentes, mais voyons la partie qui nous intéresse, les fonctions et variables de chiffrement/déchiffrement.</p>
+
+
+
+  <div class="collapsable-code">
+    <input id="975643281" type="checkbox"  />
+    <label for="975643281">
+      <span class="collapsable-code__language">c#</span>
+      
+      <span class="collapsable-code__toggle" data-label-expand="Montrer" data-label-collapse="Cacher"></span>
+    </label>
+    <pre class="language-c#" ><code>
+....
+internal const string EncryptionPassword = &#34;RXZpbERlZmF1bHRQYXNzIQ==&#34;;
+....
+private static void DecryptFile(string path, string encryptionExtension)
+{
+        try
+        {
+                if (!path.EndsWith(encryptionExtension))
+                {
+                        return;
+                }
+                string outputFile = path.Remove(path.Length - 4);
+                using (AesCryptoServiceProvider aesCryptoServiceProvider = new AesCryptoServiceProvider())
+                {
+                        aesCryptoServiceProvider.Key = Convert.FromBase64String(&#34;RXZpbERlZmF1bHRQYXNzIQ==&#34;);
+                        aesCryptoServiceProvider.IV = new byte[16]
+                        {
+                                0,
+                                1,
+                                0,
+                                3,
+                                5,
+                                3,
+                                0,
+                                1,
+                                0,
+                                0,
+                                2,
+                                0,
+                                6,
+                                7,
+                                6,
+                                0
+                        };
+                        DecryptFile(aesCryptoServiceProvider, path, outputFile);
+                }
+        }
+        catch
+        {
+                return;
+        }
+        try
+        {
+                File.Delete(path);
+        }
+        catch (Exception)
+        {
+        }
+}
+....
+private static void EncryptFile(SymmetricAlgorithm alg, string inputFile, string outputFile)
+{
+        byte[] array = new byte[65536];
+        using (FileStream fileStream = new FileStream(inputFile, FileMode.Open))
+        {
+                using (FileStream stream = new FileStream(outputFile, FileMode.Create))
+                {
+                        using (CryptoStream cryptoStream = new CryptoStream(stream, alg.CreateEncryptor(), CryptoStreamMode.Write))
+                        {
+                                int num;
+                                do
+                                {
+                                        num = fileStream.Read(array, 0, array.Length);
+                                        if (num != 0)
+                                        {
+                                                cryptoStream.Write(array, 0, num);
+                                        }
+                                }
+                                while (num != 0);
+                        }
+                }
+        }
+}
+....
+</code></pre>
+  </div>
+
+
+<p>On peut donc voir que c&rsquo;est un chiffrement AES. Nous avons la clé dans le code ainsi que le vecteur d&rsquo;initialisation. Le programme utilise la classe <a href="https://docs.microsoft.com/fr-fr/dotnet/api/system.security.cryptography.aescryptoserviceprovider?view=net-5.0">AesCryptoServiceProvider</a>, avec le mode CBC par <a href="https://docs.microsoft.com/fr-fr/dotnet/api/system.security.cryptography.aescryptoserviceprovider.mode?view=net-5.0#System_Security_Cryptography_AesCryptoServiceProvider_Mode">défaut</a></p>
+<p>Nous avons donc toutes les informations pour recoder la fonction de déchiffrement en python, sous la forme d&rsquo;un script.</p>
+
+
+
+  <div class="collapsable-code">
+    <input id="917526438" type="checkbox"  />
+    <label for="917526438">
+      <span class="collapsable-code__language">python</span>
+      
+      <span class="collapsable-code__toggle" data-label-expand="Montrer" data-label-collapse="Cacher"></span>
+    </label>
+    <pre class="language-python" ><code>
+#! /usr/bin/env python3
+# usage: decrypt.py &lt;filename&gt;
+
+from Crypto.Cipher import AES
+import sys
+import base64
+
+key = b&#39;RXZpbERlZmF1bHRQYXNzIQ==&#39;
+iv = bytearray([0, 1, 0, 3, 5, 3, 0, 1, 0, 0, 2, 0, 6, 7, 6, 0])
+
+def main(filename):
+    with open(filename, &#39;rb&#39;) as file:
+        content = file.read()
+        file.close()
+
+    aes = AES.new(base64.b64decode(key), AES.MODE_CBC, iv)
+    aes.block_size = 128
+    text = aes.decrypt(content)
+
+    result_filename = filename[:-5]
+    with open(result_filename, &#39;wb&#39;) as file:
+        file.write(text)
+        file.close()
+
+    print(&#34;Good! %s was decode to %s&#34; % (filename, result_filename))
+
+if __name__ == &#34;__main__&#34;:
+    if len(sys.argv) != 2:
+        print(&#34;usage: decrypt.py &lt;filename&gt;&#34;)
+    else:
+        main(sys.argv[1])
+</code></pre>
+  </div>
+
+
+<p>Notre script va ouvrir le fichier passé en paramètre, le déchiffrer et restaurer le fichier d&rsquo;origine sans l&rsquo;extension <code>.evil</code>.</p>
+<p>Précedemment, nous avions trouvé un fichier qui avait l&rsquo;air très intéressant, <code>informations_attaque.txt.evil</code>. Extractons le et utilisons notre script dessus!</p>
+
+
+
+  <div class="collapsable-code">
+    <input id="671285349" type="checkbox"  />
+    <label for="671285349">
+      <span class="collapsable-code__language">shell</span>
+      
+      <span class="collapsable-code__toggle" data-label-expand="Montrer" data-label-collapse="Cacher"></span>
+    </label>
+    <pre class="language-shell" ><code>
+$ docker run --rm -v $(pwd):/samples -ti cincan/volatility -f /samples/dump.vmem --profile=Win7SP1x64 dumpfiles -D /samples/out -Q &#39;0x000000001715ed50&#39;
+
+$ mv file.None.0xfffffa800e9fec60.dat informations_attaque.txt.evil
+
+$ ./decrypt.py informations_attaque.txt.evil
+Good! informations_attaque.txt.evil was decode to informations_attaque.txt
+</code></pre>
+  </div>
+
+
+<blockquote>
+<p>Ce message est destiné à toute force alliée en mesure de nous venir en aide, nous la résistance d&rsquo;Evil Country. Hier, nous sommes parvenus à mettre la main sur un dossier confidentiel émanant des services secrets d&rsquo;Evil Gouv.</p>
+<p>Ces documents font mention d&rsquo;une opération d&rsquo;anéantissement de la résistance à l&rsquo;aide d&rsquo;un puissant agent innervant, le VX. L&rsquo;attaque est prévue dans 4 jours à 4h40 au sein du fief de la résistance.</p>
+<p>Nous savons de source sure qu&rsquo;un convoi permettant la synthèse du VX partira de l&rsquo;entrepot Stockos de Bad Country vers le fief de la résistance d&rsquo;ici quelques jours. Il faut intercepter ce convoi !</p>
+<p>Contactez-nous à cette adresse : <a href="http://ctf.challengecybersec.fr/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx">http://ctf.challengecybersec.fr/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</a></p>
+</blockquote>
+<p>Nous avons déchiffré le fichier ! 🏁</p>
+<p>Merci de votre lecture, et vive Brigitte !</p>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Voir d&#39;autres posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        
+        <span class="button next">
+            <a href="https://nirae.github.io/posts/my-first-post/">
+                <span class="button__text">My First Post</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+  </div>
+
+  
+    <footer class="footer">
+    <div class="footer__inner">
+        <nav class="">
+            <ul>
+                <li>
+                    <span class="icon is-small">
+                        <i class="fab fa-twitter"></i>
+                    </span>
+                    <a href="https://twitter.com/_nirae">
+                        <span>Twitter</span>
+                    </a>
+                </li>
+                <li>
+                    <span class="icon is-small">
+                        <i class="fab fa-github"></i>
+                    </span>
+                    <a href="https://github.com/nirae">
+                        <span>Github</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+      
+        <div class="copyright copyright--user">
+          <span>© 2020 nirae</span>
+      
+        </div>
+    </div>
+  </footer>
+  
+  <script src="https://nirae.github.io/assets/main.js"></script>
+  <script src="https://nirae.github.io/assets/prism.js"></script>
+  
+  
+    <script src="https://nirae.github.io/assets/languageSelector.js"></script>
+  
+  
+  
+  
+
+  
+</div>
+
+</body>
+</html>

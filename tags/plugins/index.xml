@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>plugins on Nirae</title>
-    <link>/tags/plugins/</link>
-    <description>Recent content in plugins on Nirae</description>
+    <title>plugins on Nirae - Blog</title>
+    <link>https://nirae.github.io/tags/plugins/</link>
+    <description>Recent content in plugins on Nirae - Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>fr</language>
     <copyright>nirae</copyright>
-    <lastBuildDate>Sat, 02 May 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/plugins/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 02 May 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://nirae.github.io/tags/plugins/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>My First Post</title>
-      <link>/posts/my-first-post/</link>
+      <link>https://nirae.github.io/posts/my-first-post/</link>
       <pubDate>Sat, 02 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>/posts/my-first-post/</guid>
+      <guid>https://nirae.github.io/posts/my-first-post/</guid>
       <description>Hello World! </description>
     </item>
     
