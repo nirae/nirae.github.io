@@ -20,14 +20,5 @@ Cette année, “Brigitte Friang”, résistante et membre du BCRA, les services
 Une première consistant à décoder un message depuis la première page du challenge: challengecybersec.fr. Une fois cette étape passée, nous arrivions sur un &amp;ldquo;chat&amp;rdquo; composé de plusieurs agents nous donnant des missions de plusieurs disciplines (algo, web, cryptographie, forensic).</description>
     </item>
     
-    <item>
-      <title>My First Post</title>
-      <link>https://nirae.github.io/posts/my-first-post/</link>
-      <pubDate>Sat, 02 May 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://nirae.github.io/posts/my-first-post/</guid>
-      <description>Hello World! </description>
-    </item>
-    
   </channel>
 </rss>

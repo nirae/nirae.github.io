@@ -26,23 +26,5 @@
       <description></description>
     </item>
     
-    <item>
-      <title>Development</title>
-      <link>https://nirae.github.io/categories/development/</link>
-      <pubDate>Sat, 02 May 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://nirae.github.io/categories/development/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>VIM</title>
-      <link>https://nirae.github.io/categories/vim/</link>
-      <pubDate>Sat, 02 May 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://nirae.github.io/categories/vim/</guid>
-      <description></description>
-    </item>
-    
   </channel>
 </rss>
