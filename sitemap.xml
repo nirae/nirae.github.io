@@ -1,65 +1,41 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
   <url>
     <loc>https://nirae.github.io/categories/</loc>
     <lastmod>2020-12-02T15:02:07+01:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://nirae.github.io/tags/ctf/</loc>
     <lastmod>2020-12-02T15:02:07+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://nirae.github.io/categories/forensic/</loc>
-    <lastmod>2020-12-02T15:02:07+01:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://nirae.github.io/tags/forensic/</loc>
     <lastmod>2020-12-02T15:02:07+01:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
+    <loc>https://nirae.github.io/categories/forensic/</loc>
+    <lastmod>2020-12-02T15:02:07+01:00</lastmod>
+  </url><url>
     <loc>https://nirae.github.io/tags/malware/</loc>
     <lastmod>2020-12-02T15:02:07+01:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://nirae.github.io/</loc>
     <lastmod>2020-12-02T15:02:07+01:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://nirae.github.io/posts/</loc>
     <lastmod>2020-12-02T15:02:07+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://nirae.github.io/categories/security/</loc>
-    <lastmod>2020-12-02T15:02:07+01:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://nirae.github.io/tags/security/</loc>
     <lastmod>2020-12-02T15:02:07+01:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
+    <loc>https://nirae.github.io/categories/security/</loc>
+    <lastmod>2020-12-02T15:02:07+01:00</lastmod>
+  </url><url>
     <loc>https://nirae.github.io/tags/</loc>
     <lastmod>2020-12-02T15:02:07+01:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://nirae.github.io/tags/writeup/</loc>
     <lastmod>2020-12-02T15:02:07+01:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://nirae.github.io/posts/writeup-challenge-dgse-brigitte-friang-forensic/</loc>
     <lastmod>2020-12-02T15:02:07+01:00</lastmod>
   </url>
-  
 </urlset>
